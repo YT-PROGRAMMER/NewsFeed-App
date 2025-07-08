@@ -26,9 +26,7 @@ function App() {
     );
 
     const data = await res.json();
-    if(!apiKey){
-      setError("vist website 'newsfeed.org' to get api")
-    }
+console.log(data)
 
     return (data.articles = data.articles.map((article) => {
       const { url, title, description, author, publishedAt, urlToImage } =

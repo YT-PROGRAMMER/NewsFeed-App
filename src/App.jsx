@@ -18,15 +18,17 @@ function App() {
   const pageNumber = useRef(1);
   const qureyValue = useRef("");
   const loadData = async (currentCategory) => {
+    const apiKey = import.meta.env.VITE_NEWS_API_KEY
     const res = await fetch(
       `https://newsapi.org/v2/top-headlines?category=${currentCategory}&q=${
         qureyValue.current
-      }&page=${pageNumber.current}&pageSize=${PAGE_SIZE}&country=us&apiKey=${
-        import.meta.env.VITE_NEWS_API_KEY
-      }`
+      }&page=${pageNumber.current}&pageSize=${PAGE_SIZE}&country=us&apiKey=${apiKey}`
     );
 
     const data = await res.json();
+    if(!apiKey){
+      setError("vist website 'newsfeed.org' to get api")
+    }
 
     return (data.articles = data.articles.map((article) => {
       const { url, title, description, author, publishedAt, urlToImage } =

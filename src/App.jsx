@@ -10,6 +10,7 @@ const Footer = styled("div")(({ theme }) => ({
   justifyContent: "space-between",
 }));
 const PAGE_SIZE = 5;
+    const apiKey = import.meta.env.VITE_NEWS_API_KEY
 function App() {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,7 +19,6 @@ function App() {
   const pageNumber = useRef(1);
   const qureyValue = useRef("");
   const loadData = async (currentCategory) => {
-    const apiKey = import.meta.env.VITE_NEWS_API_KEY
     const res = await fetch(
       `https://newsapi.org/v2/top-headlines?category=${currentCategory}&q=${
         qureyValue.current
@@ -26,7 +26,7 @@ function App() {
     );
 
     const data = await res.json();
-console.log(data)
+
 
     return (data.articles = data.articles.map((article) => {
       const { url, title, description, author, publishedAt, urlToImage } =
@@ -49,7 +49,13 @@ console.log(data)
         setArticles(newData);
       })
       .catch((error) => {
+        if(!apiKey) {
+        setError("visit website 'newsfeed.org' to get apikey");
+          
+        }else {
+          
         setError("An error has occurred");
+        }
       })
       .finally(() => {
         setLoading(false);
